@@ -91,7 +91,7 @@ idx = kmeans(y,2);
 
 figure(2);
 hold on;
-sy1 = scatter(y(:,1),y(:,2),'b','DisplayName','Training Data');
+sy1 = scatter(y(:,1),y(:,2),'b');
 labelpoints(y(:,1),y(:,2), idx)
 title('clustering and then classification')
 ylabel('y2')
@@ -112,7 +112,7 @@ b = Mdl_y.Bias;
 y1 = 1:10;
 y2 = -(b+y1.*w(1))/w(2);
 
-py1 = plot(y1,y2, 'DisplayName','Hyperplane');
+py1 = plot(y1,y2, 'DisplayNam');
 % legend(py1, 'Hyperplane');
 
 
