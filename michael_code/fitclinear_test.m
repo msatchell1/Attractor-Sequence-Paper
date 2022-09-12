@@ -98,7 +98,7 @@ ylabel('y2')
 xlabel('y1')
 xlim([0,10]);
 ylim([0,10]);
-% legend(sy1,'Training Data');
+
 
 % Now train a new model on this labeled data.
 [Mdl_y,FitInfo_y] = fitclinear(y,idx);
@@ -113,7 +113,7 @@ y1 = 1:10;
 y2 = -(b+y1.*w(1))/w(2);
 
 py1 = plot(y1,y2, 'DisplayName','Hyperplane');
-% legend(py1, 'Hyperplane');
+
 
 
 %  Now create new points and assign them labels based on model.
@@ -122,7 +122,7 @@ y_new = (b_rand-a_rand).*rand(10,2) + a_rand;
 labels_y = predict(Mdl_y,y_new);
 sy2 = scatter(y_new(:,1),y_new(:,2),'g', 'DisplayName','Testing Data');
 labelpoints(y_new(:,1),y_new(:,2), labels_y)
-% legend([sy1,sy2,py1], ['Training Data','Hyperplane','Testing Data']);
+
 legend()
 hold off;
 
