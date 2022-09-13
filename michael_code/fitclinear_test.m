@@ -1,4 +1,5 @@
 % Testing the matlab linear classification function fitclinear().
+% Michael Satchell 09-13-22
 
 %% I want to create a 2D example of a support vector machine classifying data.
 
