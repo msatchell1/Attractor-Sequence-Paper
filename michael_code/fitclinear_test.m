@@ -128,4 +128,91 @@ hold off;
 
 
 
+%% Drawing from distributions
+% Now I am going to draw two samples from two distributions and train the
+% network on those using supervised learning. Then I am going to get new
+% data from one or both of the distributions and test how well my model is
+% able to correctly classify the new data as belonging to one distribution
+% or the other.
+
+
+% I play around with normal distributions here
+
+pd1 = makedist('normal','mu',-2,'sigma',2);
+pd2 = makedist('normal','mu',2,'sigma',2);
+
+pd_data1 = random(pd1,10,2);
+pd_data2 = random(pd2,10,2);
+
+all_data = [pd_data1 ; pd_data2];
+
+x = -10:0.01:10;
+pdf1 = pdf(pd1,x);
+pdf2 = pdf(pd2,x);
+
+figure(3);
+hold on;
+plot(x,pdf1,'b')
+plot(x,pdf2,'r')
+title('proability distributions used for sampling data')
+legend('dist1','dist2')
+% histogram(pd_data1,'Normalization','pdf','FaceColor','b')
+% histogram(pd_data2,'Normalization','pdf','FaceColor','r')
+hold off;
+
+
+% Here we feed the labeled dist data to the SVM.
+
+data1_labels = zeros(size(pd_data1,1),1) + 1;
+data2_labels = zeros(size(pd_data2,1),1) + 2;
+
+all_labels = [data1_labels ; data2_labels];
+
+pd_mdl = fitclinear(all_data, all_labels);
+
+w = pd_mdl.Beta;
+b = pd_mdl.Bias;
+
+y1 = -10:10;
+y2 = -(b+y1.*w(1))/w(2);
+
+figure(4);
+hold on;
+scatter(pd_data1(:,1),pd_data1(:,2),'b','DisplayName','Dist1');
+scatter(pd_data2(:,1),pd_data2(:,2),'r','DisplayName','Dist2');
+labelpoints(all_data(:,1),all_data(:,2),all_labels)
+plot(y1,y2, 'DisplayName','Hyperplane');
+title('training data')
+legend('Dist1','Dist2')
+hold off;
+
+
+% Now we want to get new data samples and use the model to predict which
+% distribution they are from.
+
+pd_nd1 = random(pd1,10,2); pd_nd2 = random(pd2,10,2);
+
+[predict_1,scores_1] = predict(pd_mdl,pd_nd1);
+[predict_2,scores_2] = predict(pd_mdl,pd_nd2);
+
+figure(5);
+hold on;
+scatter(pd_nd1(:,1),pd_nd1(:,2),'b','DisplayName','Dist1')
+scatter(pd_nd2(:,1),pd_nd2(:,2),'r','DisplayName','Dist2')
+labelpoints(pd_nd1(:,1),pd_nd1(:,2),predict_1)
+labelpoints(pd_nd2(:,1),pd_nd2(:,2),predict_2)
+plot(y1,y2,'DisplayName','Hyperplane')
+title('testing data')
+legend('Dist1','Dist2')
+
+
+% A continuation would be to evaluate how well the model did at predicting
+% the data... The arrays scores_x which is returned by predict() tells us
+% the confidence the model has that each data point belongs to a given
+% label. There are numbers given for each class (dist1 and dist2 in this
+% case), and the more positive the score, the more confident the decision.
+% This is based (I believe) off how far each point is from the hyperplane.
+
+
+
 
