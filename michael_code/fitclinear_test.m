@@ -12,8 +12,8 @@ x_data = zeros(3,2);
 
 % Now fill it with some data
 x_data(1,:) = [5,3];
-x_data(2,:) = [1,1];
-x_data(3,:) = [7,8];
+x_data(2,:) = [1,7];
+x_data(3,:) = [4,5];
 
 % Lets plot this data
 figure(1);
