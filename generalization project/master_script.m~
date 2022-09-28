@@ -27,11 +27,9 @@
 
 p = make_params_genr();
 
-stim_choice = [1,1]; % The choice of stimulus type for each characteristic.
-% Format is [char1, char2, ...]. The length of stim_choice must equal
-% p.num_char and the value of each element must not exceed p.num_type.
+stim_ID = 1;
 
-Iapp = make_Iapp_genr(p,stim_choice);
+Iapp = make_Iapp_genr(p,seq);
 
 [r,D,s] = run_network_genr(p, Iapp, 'silent', 'no');
 

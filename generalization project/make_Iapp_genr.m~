@@ -20,15 +20,10 @@ end
 % I follow this: https://www.mathworks.com/matlabcentral/answers/362211-variable-indexing-for-n-dimension-data
 % Using a structure and subsref() allows me to index into type_units
 % without knowing the length of stim_choice.
-
 S.type = '()';
-
-% for char = 1:length(stim_choice)
-%     
-% end
-S.subs = {':',1,':'};
-stim_units = subsref(params.type_units,S);
-
+S.subs = [stim_choice repmat({':'},1,numel(size(params.type_units))-numel(stim_choice))];
+subsref(params.type_units,S);
+stim_units = params.type_units(stim_choice,:);
 
     
 % generate random stimulus durations (usually constant)
