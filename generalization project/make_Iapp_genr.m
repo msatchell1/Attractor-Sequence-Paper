@@ -11,7 +11,7 @@ if length(stim_choice) ~= params.num_char
     error("Length of stim_choice must equal p.num_char")
 end
 
-if any(stim_choice > params.num_type)
+if any(cell2mat(stim_choice) > params.num_type)
     error("Values in stim_choice must not exceed p.num_type")
 end
 
@@ -20,27 +20,32 @@ end
 % I follow this: https://www.mathworks.com/matlabcentral/answers/362211-variable-indexing-for-n-dimension-data
 % Using a structure and subsref() allows me to index into type_units
 % without knowing the length of stim_choice.
-
 S.type = '()';
+% Each loop adds the selected type units for a characteristic:
+for char = 1:params.num_char
+    index_vec = {char, stim_choice{char}};
+    S.subs = [index_vec repmat({':'},1,numel(size(params.type_units))-numel(index_vec))];
 
-% for char = 1:length(stim_choice)
-%     
-% end
-S.subs = {':',1,':'};
-stim_units = subsref(params.type_units,S);
-
+    stim_units(char,:) = squeeze(subsref(params.type_units,S)); % Here S is used to index 
+    % type_units. Squeeze removes dimensions of 1 from the output matrix. 
+end
 
     
-% generate random stimulus durations (usually constant)
-stim_durs = normrnd(params.mean_stim_dur,params.stim_dur_std,1,params.sequence_length);
+% % generate random stimulus durations (usually constant)
+% stim_durs = normrnd(params.mean_stim_dur,params.stim_dur_std,1,params.sequence_length);
 % generate random stimulus amplitudes (usually constant)
-stim_amps = normrnd(params.mean_stim_amp,params.stim_amp_std,1,params.sequence_length);
-% calculate experiment duration (in timesteps)
-exp_dur = sum(params.stim_int/params.dt) + sum(stim_durs/params.dt);
-tvec = 1:exp_dur; % time vector (in ms)
+stim_amps = normrnd(params.mean_stim_amp,params.stim_amp_std,1,params.num_char);
+
+
+tvec = 1:params.simLength; % time vector (in ms)
 Iapp = zeros(params.Ngroups,length(tvec)); % initialize matrix for input current
 
-% Iapp(params.
+for char = 1:params.num_char
+    units = stim_units(char,:); % Units to give stimulus to.
+    
+    Iapp(units, params.stim_start:params.stim_end) = stim_amps(char); % Assigns 
+    % stimulus to correct units over certain time.
+end
 
 % for i=1:params.sequence_length % for each stimulus in the sequence
 %     % calculate stimulus onset time

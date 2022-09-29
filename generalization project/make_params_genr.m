@@ -42,7 +42,7 @@ p.Delta_e = 1; % determines slope of excitatory f-I curve
 p.Delta_i = 3; % determines slope of inhibitory f-I curve
 
 % Noise parameters
-p.sigma = [.000]; % (2 noise levels) sigma is the std of white noise
+p.sigma = [.002]; % (2 noise levels) sigma is the std of white noise
 
 % Synaptic release parameters
 p.p0_e = 1;  % fraction of docked vesicles released per spike for EE/EI connections
@@ -147,8 +147,9 @@ switch p.stim_type
         p.stim_frac_type       = .3; % Fraction of units within a characteristic to assign each type.
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
-        p.stim_start           = 3000; % Time to begin stimulus
-        p.stim_end             = 3500; % Time to end stimulus
+        p.stim_start           = 3000; % Time to begin stimulus (ms)
+        p.stim_end             = 3500; % Time to end stimulus (ms)
+        p.simLength            = 10000; % Total simulation length (ms)
 end
 
 if p.num_char*p.stim_frac_char > 1
