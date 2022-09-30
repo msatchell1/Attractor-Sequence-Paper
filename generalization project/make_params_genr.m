@@ -9,6 +9,8 @@ function [p] = make_params_genr(varargin)
 % to be defined already for me to pass it in - I can define new parameters
 % externally!
 
+p.rng_seed = 1; % RNG seed.
+
 
 % % Experiment Info
 % p.Ntrials = 10;
@@ -63,7 +65,7 @@ switch p.stim_type
         p.stim_dur_variability = 0;
         p.mean_stim_amp        = 1;
         p.stim_amp_variability = 0;
-        p.num_char             = 3; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
+        p.num_char             = 2; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
         p.stim_frac_char       = 0.33; % Fraction of total units to be assigned to a characteristic.
         % Note num_char*stim_frac_char cannot be greater than 1. 
         p.num_type             = 2; % Number of specific character subtypes for each char. Ex: If color has green 
@@ -90,7 +92,7 @@ for i=1:(length(varargin)/2)
 end
 
 
-seed = rng(p.rng_seed,'twister');
+rng(p.rng_seed,'twister');
 
 % Assign p.stim_frac_char units to each characteristic.
 shuffled_IDs = randperm(p.Ne); % Creates and shuffles a list of unit IDs.
