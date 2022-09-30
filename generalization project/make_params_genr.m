@@ -56,95 +56,20 @@ p.W_ee_max = .342; % maximum connection strength for EE connections (ben's value
 p.W_ei     = .665;  % connection strength for EI connections (ben's value = .665)
 p.W_ie     = -540; % connection strength for IE connections (ben's value = -540)
 
-p.stim_type = 10; % use 9 for pretty much everything
+p.stim_type = 10;
 switch p.stim_type
-    case 1 % (not used for paper)
-        p.sequence_length   = 10;  % # of stimuli (ranged from 1-10 stimuli in paper)
-        p.stim_dur = .100;  % (100ms) Duration of stimuli (ranged from .01-1s in paper)
-        p.stim_amp = 2;   % Stimulus amplitude (ranged from .5-3 in paper)
-        p.stim_int = 1.5; % (1.5s) inter_stimulus interval
-    case 2 % alternating (not used for paper)
-        p.sequence_length = 10;
-        p.stim_dur        = .100;
-        p.stim_amp        = 1;
-        p.stim_int        = 1.5;
-        p.stim_frac       = .2;
-        p.n_dif_stims     = 2;
-    case 3 % half-half (not used for paper)
-        p.sequence_length = 10;
-        p.stim_dur        = .100;
-        p.stim_amp        = 1;
-        p.stim_int        = 1.5;
-        p.stim_frac       = .2;
-        p.n_dif_stims     = 2;
-    case 4 % half-half reverse (not used for paper)
-        p.sequence_length = 10;
-        p.stim_dur        = .100;
-        p.stim_amp        = 1;
-        p.stim_int        = 1.5;
-        p.stim_frac       = .2;
-        p.n_dif_stims     = 2;
-    case 5 % all permutations (not used for paper)
-        p.sequence_length = 6;
-        p.stim_dur        = .25;
-        p.stim_amp        = 1.07; % (2) (ben's value = 1.07)
-        max_int           = 1.5;
-        min_int           = 1.5;
-        p.stim_int        = round((max_int - min_int)*rand(1,p.sequence_length+1) + min_int, 3); %normally 1.5
-        p.stim_frac       = .59; % (.2) (ben's value = .59)
-        p.n_dif_stims     = 2;
-    case 6 % Nearest-neighbor 7-word sequences 
-        p.sequence_length = 7; % # of stimuli per sequence
-        p.stim_dur        = .25; % # duration of stimuli in seconds
-        p.stim_amp        = 1.07;% # dimensionless amplitude of input
-        max_int = 1.5; % maximum interval between stimuli in seconds
-        min_int = 1.5;% minimum interval between stimuli in seconds
-        p.stim_int        = round((max_int - min_int)*rand(1,p.sequence_length+1) + min_int, 3);
-        p.stim_frac       = .59; % fraction of excitatory cell groups receiving input from each stimulus type
-        p.n_dif_stims     = 7; % # of different stimulus types present across sequences
-    case 7 % latin squares word sequence generation
-        p.sequence_length = 7;
-        p.stim_dur        = .25;
-        p.stim_amp        = 1.07;
-        max_int           = 1.5;
-        min_int           = 1.5;
-        p.stim_int        = round((max_int - min_int)*rand(1,p.sequence_length+1) + min_int,3);
-        p.stim_frac       = .59;
-        p.n_dif_stims     = 7;
-        p.nseqs           = 70; % here we are generating 70 unique sequences using the latin squares method to ensure that each stimulus is present in each sequence position the same number of times across the whole sequence set
-    case 8 % 10-word (for producing final recall figures)
-        % We generate 100 unique sequences from 1000 unique stimulus types and for each sequence, we measure what individual response (response of the network to one of the 1000 individual stimuli) most closely matches the final network state
-        p.sequence_length = 10;
-        p.stim_dur        = .25;
-        p.stim_amp        = 1.07;
-        max_int = 1.5;
-        min_int = 1.5;
-        p.stim_int        = round((max_int-min_int)*rand(1,p.sequence_length+1)+min_int,3);
-        p.stim_frac       = .59;
-        p.n_dif_stims     = 1000;
-        p.nseqs           = 100;
-    case 9 % variable duration/amplitude
-        p.sequence_length      = 6; % length of the desired sequences
-        p.mean_stim_dur        = .25; % mean stimulus durations (s)
-        p.stim_dur_variability = 0; % Fraction of mean stim dur to set duration STD
-        p.mean_stim_amp        = 1.07; % mean of stimulus amplitudes
-        p.stim_amp_variability = 0; % Fraction of mean stim amplitude to set amplitude STD
-        max_int = 1.5; % maximum stimulus interval
-        min_int = 1.5; % minimum stimulus interval
-        p.stim_frac            = .59; % Fraction of excitatory units receiving each stimulus
-        p.n_dif_stims          = 2; % Number of different stimulus types
         
     case 10 % Generalization project case
         p.mean_stim_dur        = .25; 
         p.stim_dur_variability = 0;
         p.mean_stim_amp        = 1;
         p.stim_amp_variability = 0;
-        p.num_char             = 2; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
-        p.stim_frac_char       = 0.5; % Fraction of total units to be assigned to a characteristic.
+        p.num_char             = 3; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
+        p.stim_frac_char       = 0.33; % Fraction of total units to be assigned to a characteristic.
         % Note num_char*stim_frac_char cannot be greater than 1. 
         p.num_type             = 2; % Number of specific character subtypes for each char. Ex: If color has green 
         % and blue, num_type = 2.
-        p.stim_frac_type       = .3; % Fraction of units within a characteristic to assign each type.
+        p.stim_frac_type       = 0.3; % Fraction of units within a characteristic to assign each type.
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
         p.stim_start           = 3000; % Time to begin stimulus (ms)

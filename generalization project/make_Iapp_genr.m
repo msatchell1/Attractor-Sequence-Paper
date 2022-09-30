@@ -44,7 +44,7 @@ for char = 1:params.num_char
     units = stim_units(char,:); % Units to give stimulus to.
     
     Iapp(units, params.stim_start:params.stim_end) = stim_amps(char); % Assigns 
-    % stimulus to correct units over certain time.
+    % stimulus to correct units over time interval.
 end
 
 % for i=1:params.sequence_length % for each stimulus in the sequence
