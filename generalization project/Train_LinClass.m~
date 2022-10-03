@@ -9,7 +9,7 @@
 
 
 % Extract all individual data points that will sit in firing rate space by reshaping
-% the existing matrix. Do the exact same operation on the labels to retain 
+% the existing matrix. DO the exact same operation on the labels to retain 
 % information on which data used which types. The reshaping seems to be
 % done by running through each parameter set, taking the first simulation
 % data and appending that to the new array such that the new matrix is
@@ -43,12 +43,10 @@ for char = 1:size(X_types, 2)
        % correct type labels.
       indices = find(X_types(:,char) == cc(2));
       
-      X_labels(indices) = 1; % Assigns labels to these "correct" data points.
+      X_labels(indices
       
    end
 end
-
-LCp.X_labels = X_labels; 
 
 
 

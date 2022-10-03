@@ -12,7 +12,7 @@ LCp = make_LC_params();
 
 % Array to hold avg rate data for all parameter sweeps.
 all_r_avg = zeros(length(vary_p.values1),length(p.type_combs),p.Ne);
-X_types = zeros(size(all_r_avg,1),size(all_r_avg,2), p.num_type);
+types = zeros(size(all_r_avg,1),size(all_r_avg,2), p.num_char);
 
 % This loop runs through parameter values, running simulations on each one.
 for i = 1:length(vary_p.values1)
@@ -20,11 +20,11 @@ for i = 1:length(vary_p.values1)
     p = make_params_genr(vary_p.param1,vary_p.values1(i));
 
     all_r_avg(i,:,:) = run_main(p);
-    X_types(i,:,:) = p.type_combs'; % Stores the types used for the simulations just ran.
+    types(i,:,:) = p.type_combs'; % Stores the types used for the simulations just ran.
 
 end
 
-LCp.types = X_types; % Assigns types to linear classification parameters so
+LCp.types = types; % Assigns types to linear classification parameters so
 % it can be worked on later.
 LCp.r_avg = all_r_avg;
 
