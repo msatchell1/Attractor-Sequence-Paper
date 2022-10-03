@@ -19,7 +19,7 @@
 X = reshape(LCp.r_avg, [(size(LCp.r_avg,1)*size(LCp.r_avg,2)), size(LCp.r_avg,3)]);
 X_types = reshape(LCp.types, [(size(LCp.types,1)*size(LCp.types,2)), size(LCp.types,3)]);
 
-% Assigns this data to the linear classification parameters object:
+% Assigns this data to the linear classification parameters structure:
 LCp.X = X;
 LCp.X_types = X_types;
 
@@ -50,6 +50,12 @@ end
 
 LCp.X_labels = X_labels; 
 
+
+% Using fitclinear to do the SVM analysis. Returns the created model
+% (hyperplane) and fitting information. The data needs to be an n x p
+% matrix, where each n is a data point and p is the dimensionality of the
+% data.
+[Mdl, FitInfo] = fitclinear(LCp.X, LCp.X_labels);
 
 
 
