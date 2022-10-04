@@ -35,7 +35,7 @@ X_labels = zeros(size(X_types, 1), 1);
 % Format: [ char , type ]
 % Note cc(1) cannot be greater than p.num_char, and cc(2) not greater than
 % p.num_type.
-cc = [1,3];
+cc = [1,1];
 
 for char = 1:size(X_types, 2)
    if char == cc(1)
@@ -56,6 +56,7 @@ LCp.X_labels = X_labels;
 % matrix, where each n is a data point and p is the dimensionality of the
 % data.
 [Mdl, FitInfo] = fitclinear(LCp.X, LCp.X_labels);
+
 
 
 
