@@ -1,4 +1,4 @@
-% function [] = param_sweep_genr()
+function [LCO] = param_sweep_genr(LCO)
 % Function to vary parameters over multiple simulations.
 
 vary_p.param1 = "rng_seed";
@@ -8,7 +8,6 @@ p = make_params_genr();
 % Since parameters p are changing in the loop below, its important that
 % none of those changing parameters are included in LCp, because only the
 % information of the parameter set p defined above will be fed to make_LC_params().
-LCp = make_LC_params();
 
 % Array to hold avg rate data for all parameter sweeps.
 all_r_avg = zeros(length(vary_p.values1),length(p.type_combs),p.Ne);
@@ -24,9 +23,9 @@ for i = 1:length(vary_p.values1)
 
 end
 
-LCp.types = types; % Assigns types to linear classification parameters so
+LCO.types = types; % Assigns types to linear classification parameters so
 % it can be worked on later.
-LCp.r_avg = all_r_avg;
+LCO.r_avg = all_r_avg;
 
 
 
@@ -70,4 +69,4 @@ end
 % lgd = legend();
 
 
-% end
+end
