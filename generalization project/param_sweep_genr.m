@@ -1,13 +1,14 @@
-function [LCO] = param_sweep_genr(LCO)
-% Function to vary parameters over multiple simulations.
+function [LCO] = param_sweep_genr(LCO,stim_seed)
+% Function to vary parameters over multiple simulations. May also be used
+% simply to rerun simulation sets using the same stimuli (stim_seed),
+% creating multiple sets of data points because of the random connections
+% and noise in the network.
 
-vary_p.param1 = "rng_seed";
-vary_p.values1 = [11,15];
+vary_p.param1 = "stim_seed";
+vary_p.values1 = stim_seed;
 
 p = make_params_genr();
-% Since parameters p are changing in the loop below, its important that
-% none of those changing parameters are included in LCp, because only the
-% information of the parameter set p defined above will be fed to make_LC_params().
+
 
 % Array to hold avg rate data for all parameter sweeps.
 all_r_avg = zeros(length(vary_p.values1),length(p.type_combs),p.Ne);

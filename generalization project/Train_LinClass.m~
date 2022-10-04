@@ -1,23 +1,19 @@
-function [LCOs] = Train_LinClass(num_mdls,clsf_index_arrays,seed)
+function [LCOs] = Train_LinClass(num_mdls)
 % Function to create a linear classification object and train it on
 % provided data. 
 %
-% INPUTS: 
-% num_mdls - number of SVM models to create.
-% clsf_index_arrays - classifications for labelling for each model.
-%
-% OUTPUTS:
-% LCOs - object array of LinClassObj objects.
 
 
 LCOs(1,num_mdls) = LinClassObj; % Creates num_mdls objects are stores them in 
 % object array LCOs.
 
+% We need to define parameters that will change between SVM models:
+clsf_index_arrays = [ 1,1 ; 1,2 ]; % Holds classifications for labelling for each model.
 
 
 for i = 1:length(LCOs) % Loops over all hyperplane models to be calculated.
     
-    LCOs(i) = param_sweep_genr(LCOs(i),seed);
+    LCOs(i) = param_sweep_genr(LCOs(i));
 
 
 
@@ -76,4 +72,4 @@ end
 
 
 
-end
+% end

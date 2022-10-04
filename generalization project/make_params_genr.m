@@ -9,7 +9,7 @@ function [p] = make_params_genr(varargin)
 % to be defined already for me to pass it in - I can define new parameters
 % externally!
 
-p.rng_seed = 1; % RNG seed.
+p.stim_seed = 1; % stimulus RNG seed.
 
 
 % % Experiment Info
@@ -91,11 +91,11 @@ for i=1:(length(varargin)/2)
     p.(varargin{ind1}) = varargin{ind1+1};
 end
 
-
-rng(p.rng_seed,'twister');
+% Creates a random number stream ONLY for the stimulus related numbers.
+stim_s = RandStream('mt19937ar', 'Seed',p.stim_seed);
 
 % Assign p.stim_frac_char units to each characteristic.
-shuffled_IDs = randperm(p.Ne); % Creates and shuffles a list of unit IDs.
+shuffled_IDs = randperm(stim_s,p.Ne); % Creates and shuffles a list of unit IDs.
 for char = 1:p.num_char
     p.char_units(char,:) = shuffled_IDs(1:(p.stim_frac_char*p.Ne)); % Selects units for a characteristic
     shuffled_IDs = shuffled_IDs((p.stim_frac_char*p.Ne)+1:end); % Removes these units from list to ensure
@@ -109,7 +109,7 @@ for char = 1:p.num_char
     char_IDs = p.char_units(char,:); % Grabs units from one char.
     
     for type = 1:p.num_type
-        shuffled_char_IDs = char_IDs(randperm(length(char_IDs))); % Shuffles them.
+        shuffled_char_IDs = char_IDs(randperm(stim_s,length(char_IDs))); % Shuffles them.
         num_elems = round(p.stim_frac_type*length(shuffled_char_IDs)); % Number of units to select from shuffled char units.
         p.type_units(char,type,:) = shuffled_char_IDs(1:num_elems); % Assigns fraction of them to type input
     end
