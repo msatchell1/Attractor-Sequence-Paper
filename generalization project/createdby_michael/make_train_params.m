@@ -15,7 +15,8 @@ tp.num_mdls = 2; % number of models to create.
 tp.num_char = 2;
 tp.num_type = 2;
 
-tp.stim_seeds = [16,17]; % Must have length = num_mdls
+tp.stim_seeds = [16,16]; % Must have length = num_mdls
+tp.net_seed = 1; % Seed for network connectivity.
 
 tp.clsf_index_array = []; % Holds the char-type combo to seperate data for 
 % the SVM of each model.

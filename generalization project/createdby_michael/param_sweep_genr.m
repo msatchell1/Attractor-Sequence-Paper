@@ -8,7 +8,7 @@ function [LCO] = param_sweep_genr(LCO,tp)
 % vary_p.values1 = stim_seed;
 
 p = make_params_genr(); % to get p.Ne
-num_sweeps = 5;
+num_sweeps = 1;
 
 
 % Array to hold avg rate data for all parameter sweeps.
@@ -19,7 +19,8 @@ types = zeros(num_sweeps,length(tp.type_combs),tp.num_char);
 % different network connectvities and noise.
 for i = 1:num_sweeps
     
-    p = make_params_genr("stim_seed",LCO.stim_seed, "num_char",tp.num_char, "num_type",tp.num_type, "type_combs",tp.type_combs);
+    p = make_params_genr("stim_seed",LCO.stim_seed, "num_char",tp.num_char, "num_type",tp.num_type, "type_combs",tp.type_combs,...
+        "net_seed",tp.net_seed);
 
     all_r_avg(i,:,:) = run_main(p);
     types(i,:,:) = tp.type_combs'; % Stores the types used for the simulations just ran.
