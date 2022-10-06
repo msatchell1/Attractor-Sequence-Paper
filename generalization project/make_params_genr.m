@@ -10,6 +10,7 @@ function [p] = make_params_genr(varargin)
 % externally!
 
 p.stim_seed = 1; % stimulus RNG seed.
+p.type_combs = []; 
 
 
 % % Experiment Info
@@ -65,21 +66,20 @@ switch p.stim_type
         p.stim_dur_variability = 0;
         p.mean_stim_amp        = 1;
         p.stim_amp_variability = 0;
-        p.num_char             = 2; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
+
+        p.num_char             = 0; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
         p.stim_frac_char       = 0.33; % Fraction of total units to be assigned to a characteristic.
         % Note num_char*stim_frac_char cannot be greater than 1. 
-        p.num_type             = 2; % Number of specific character subtypes for each char. Ex: If color has green 
+
+        p.num_type             = 0; % Number of specific character subtypes for each char. Ex: If color has green 
         % and blue, num_type = 2.
         p.stim_frac_type       = 0.3; % Fraction of units within a characteristic to assign each type.
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
+
         p.stim_start           = 3000; % Time to begin stimulus (ms)
         p.stim_end             = 3500; % Time to end stimulus (ms)
         p.simLength            = 10000; % Total simulation length (ms)
-end
-
-if p.num_char*p.stim_frac_char > 1
-    error("Fraction of units assigned to each characteristic too large for number of characteristics.")
 end
 
 
@@ -89,6 +89,10 @@ end
 for i=1:(length(varargin)/2)
     ind1 = 2*i - 1;
     p.(varargin{ind1}) = varargin{ind1+1};
+end
+
+if p.num_char*p.stim_frac_char > 1
+    error("Fraction of units assigned to each characteristic too large for number of characteristics.")
 end
 
 % Creates a random number stream ONLY for the stimulus related numbers.
@@ -125,15 +129,5 @@ p.stim_dur_std = p.stim_dur_variability*p.mean_stim_dur;
 
 % make the weight matrix
 [p] = makeWeightMatrix(p);
-
-% Create array of type combinations:
-types = cell(1, p.num_char); % This will hold the vectors representing the types for
-% each characteristic.
-for char = 1:p.num_char
-    types{char} = 1:p.num_type;
-end
-p.type_combs =  combvec(types{:}); % Loads all of these vectors into combvec which creates a 
-% matrix that is num_types x (total # of combinations). Each column of
-% type_combs is a possible combination.
 end
 
