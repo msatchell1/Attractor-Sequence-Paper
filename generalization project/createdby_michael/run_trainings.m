@@ -45,13 +45,13 @@ for i = 1:size(tp.type_combs,2)
         if tp.type_combs(1,i) == tp.type_combs(1,j) % if chars are equal
 
             if tp.type_combs(2,i) == tp.type_combs(2,j) % if types are equal
-               dotp_same_chartype(end+1) = dotp;
+               dotp_same_chartype(end+1) = dotp
             else % if types are not equal
-                dotp_same_char(end+1) = dotp;
+                dotp_same_char(end+1) = dotp
             end
 
         else % if chars are not equal
-            dotp_diff_char(end+1) = dotp;
+            dotp_diff_char(end+1) = dotp
 
         end
 
