@@ -9,8 +9,8 @@ function [p] = make_params_genr(varargin)
 % to be defined already for me to pass it in - I can define new parameters
 % externally!
 
-p.stim_seed = 1; % stimulus RNG seed.
-p.net_seed = 1; % network connectivity seed used in makeWeightMatrix().
+p.stim_seed = ''; % stimulus RNG seed.
+p.net_seed = ''; % network connectivity seed used in makeWeightMatrix().
 p.type_combs = []; 
 
 
@@ -45,7 +45,10 @@ p.Delta_e = 1; % determines slope of excitatory f-I curve
 p.Delta_i = 3; % determines slope of inhibitory f-I curve
 
 % Noise parameters
-p.sigma = [.00]; % (2 noise levels) sigma is the std of white noise
+p.sigma = [0.0]; % (2 noise levels) sigma is the std of white noise
+% Bens value was 0.002. Around 0.3 is the threshold for noise to start
+% changing units attractor states (i.e. switching them from firing to
+% non-firing and vice versa).
 
 % Synaptic release parameters
 p.p0_e = 1;  % fraction of docked vesicles released per spike for EE/EI connections

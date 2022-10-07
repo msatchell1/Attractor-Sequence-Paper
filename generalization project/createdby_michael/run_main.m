@@ -73,7 +73,7 @@ for j = 1:size(p.type_combs,2) % Loops through all possible type input combinati
     
     Iapp = make_Iapp_genr(p,stim_choice);
 
-    [r,D,s] = run_network_genr(p, Iapp, 'random', 'no');
+    [r,D,s] = run_network_genr(p, Iapp, 'silent', 'no');
 
     [r_e_avg] = get_avg_r(p, r, p.simLength-2000, p.simLength); % Gets average firing rate of each unit.
     all_r_avg(j,:) = r_e_avg'; % Stores each vector.

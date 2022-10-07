@@ -10,13 +10,23 @@ function [tp] = make_train_params(varargin)
 % to be defined already for me to pass it in - I can define new parameters
 % externally!
 
-tp.num_mdls = 2; % number of models to create.
+tp.num_mdls = 2; % number of models to create. Usually I will want 2.
+
+tp.num_sweeps = 1; % num_sweeps adds more data points to the SVM analysis by 
+% rerunning the same simulation (same net_seed and stim_seed) num_sweeps
+% number of times. The only difference between the simulations is the noise
+% fluctuations during the simulations. With enough noise we can get a
+% distribution of data points in firing rate space for better SVM analysis.
+% For a given amount of noise, increasing num_sweeps increases stability of
+% SVM results.
 
 tp.num_char = 2;
 tp.num_type = 2;
 
-tp.stim_seeds = [16,16]; % Must have length = num_mdls
-tp.net_seed = 1; % Seed for network connectivity.
+tp.Ne = 100; % Number of excitatory units
+
+tp.stim_seeds = [50,51]; % Must have length = num_mdls
+tp.net_seed = 5; % Seed for network connectivity.
 
 tp.clsf_index_array = []; % Holds the char-type combo to seperate data for 
 % the SVM of each model.
