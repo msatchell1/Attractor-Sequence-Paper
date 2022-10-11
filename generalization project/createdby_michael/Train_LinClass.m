@@ -21,7 +21,7 @@ for i = 1:length(LCOs) % Assigns properties to LCOs
     % Format: [ char , type ]
     % Note clsf_index(1) cannot be greater than p.num_char, and clsf_index(2) not greater than
     % p.num_type.
-    LCOs(i).clsf_index = tp.clsf_index_array(:,i);
+    LCOs(i).clsf_index = tp.clsf_index_array(i,:);
 end
 
 
