@@ -45,7 +45,7 @@ p.Delta_e = 1; % determines slope of excitatory f-I curve
 p.Delta_i = 3; % determines slope of inhibitory f-I curve
 
 % Noise parameters
-p.sigma = [0.3]; % (2 noise levels) sigma is the std of white noise
+p.sigma = [0.2]; % (2 noise levels) sigma is the std of white noise
 % Bens value was 0.002. Around 0.3 is the threshold for noise to start
 % changing units attractor states (i.e. switching them from firing to
 % non-firing and vice versa).

@@ -12,7 +12,7 @@ function [tp] = make_train_params(varargin)
 
 tp.num_mdls = 2; % number of models to create. Usually I will want 2.
 
-tp.num_sweeps = 1; % num_sweeps adds more data points to the SVM analysis by 
+tp.num_sweeps = 5; % num_sweeps adds more data points to the SVM analysis by 
 % rerunning the same simulation (same net_seed and stim_seed) num_sweeps
 % number of times. The only difference between the simulations is the noise
 % fluctuations during the simulations. With enough noise we can get a
