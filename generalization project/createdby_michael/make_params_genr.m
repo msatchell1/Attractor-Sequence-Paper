@@ -21,7 +21,7 @@ p.dt = 1e-3;
 % Population info
 p.Ne = 100; % (100 cell groups) # of excitatory cell groups
 p.Ni = 1;   % (1 cell group) # of inhibitory cell groups
-p.Ngroups = p.Ne+p.Ni;
+
 
 % Time Constants
 p.tau_r = .01; % (10ms) firing rate time constant
@@ -45,8 +45,8 @@ p.Delta_e = 1; % determines slope of excitatory f-I curve
 p.Delta_i = 3; % determines slope of inhibitory f-I curve
 
 % Noise parameters
-p.sigma = [0.2]; % (2 noise levels) sigma is the std of white noise
-% Bens value was 0.002. Around 0.3 is the threshold for noise to start
+p.sigma = [0.0]; % (2 noise levels) sigma is the std of white noise
+% Bens value was 0.002. Around 0.03 is the threshold for noise to start
 % changing units attractor states (i.e. switching them from firing to
 % non-firing and vice versa).
 
@@ -57,22 +57,20 @@ p.alpha = 1; % fraction of open receptors bound by maximal vesicle release
 
 % Connection parameters
 p.W_e0     = 89;   % connection strength for excitatory SELF connections (ben's value = 89)
-p.W_ee_min = 0;    % minimum connection strength for EE connections
+p.W_ee_min = 0;    % minimum connection strength for EE connections (ben's value = 0)
 p.W_ee_max = .342; % maximum connection strength for EE connections (ben's value = .342)
 p.W_ei     = .665;  % connection strength for EI connections (ben's value = .665)
 p.W_ie     = -540; % connection strength for IE connections (ben's value = -540)
 
-p.stim_type = 10;
-switch p.stim_type
+p.stim_case = 10;
+switch p.stim_case
         
     case 10 % Generalization project case
-        p.mean_stim_dur        = .25; 
-        p.stim_dur_variability = 0;
         p.mean_stim_amp        = 1;
         p.stim_amp_variability = 0;
 
         p.num_char             = 0; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
-        p.stim_frac_char       = 0.33; % Fraction of total units to be assigned to a characteristic.
+        p.stim_frac_char       = 0.5; % Fraction of total units to be assigned to a characteristic.
         % Note num_char*stim_frac_char cannot be greater than 1. 
 
         p.num_type             = 0; % Number of specific character subtypes for each char. Ex: If color has green 
@@ -80,10 +78,10 @@ switch p.stim_type
         p.stim_frac_type       = 0.3; % Fraction of units within a characteristic to assign each type.
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
-
-        p.stim_start           = 3000; % Time to begin stimulus (ms)
-        p.stim_end             = 3500; % Time to end stimulus (ms)
-        p.simLength            = 10000; % Total simulation length (ms)
+        
+        p.stim_dur             = 500; % Duration of stimulus (ms)
+        p.stim_start           = 1000; % Time to begin stimulus (ms)
+        p.simLength            = 6000; % Total simulation length (ms)
 end
 
 
@@ -98,6 +96,15 @@ end
 if p.num_char*p.stim_frac_char > 1
     error("Fraction of units assigned to each characteristic too large for number of characteristics.")
 end
+
+
+% % set dependent variables after update
+p.Ngroups = p.Ne+p.Ni;
+p.stim_end = p.stim_start+p.stim_dur; % Time to end stimulus (ms)
+p.theta_e = (p.max_theta_e-p.min_theta_e)*rand(p.Ne,1)+p.min_theta_e; % draw thresholds from uniform distribution
+% p.stim_int = round((max_int - min_int)*rand(1,p.sequence_length+1) + min_int, 3); %normally 1.5
+p.stim_amp_std = p.stim_amp_variability*p.mean_stim_amp;
+
 
 % Creates a random number stream ONLY for the stimulus related numbers.
 stim_s = RandStream('mt19937ar', 'Seed',p.stim_seed);
@@ -128,11 +135,7 @@ end
 
 
 
-% % set dependent variables after update
-p.theta_e = (p.max_theta_e-p.min_theta_e)*rand(p.Ne,1)+p.min_theta_e; % draw thresholds from uniform distribution
-% p.stim_int = round((max_int - min_int)*rand(1,p.sequence_length+1) + min_int, 3); %normally 1.5
-p.stim_amp_std = p.stim_amp_variability*p.mean_stim_amp;
-p.stim_dur_std = p.stim_dur_variability*p.mean_stim_dur;
+
 
 % make the weight matrix
 [p] = makeWeightMatrix(p);
