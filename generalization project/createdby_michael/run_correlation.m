@@ -12,9 +12,9 @@
 % for how the network behaves over different values of stimulus amplitude
 % and duration.
 
-stim_dur = 500; % Stimulus duration in ms
+stim_dur = 250; % Stimulus duration in ms
 stim_amp = 1; % stimulus amplitude
-noise_sigma = 0.03; % White noise std for simulation.
+noise_sigma = 0.035; % White noise std for simulation.
 
 p = make_params_genr("stim_seed",1, "num_char",2, "num_type",2,...
         "net_seed",1, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
