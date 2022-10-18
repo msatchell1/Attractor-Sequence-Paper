@@ -14,20 +14,20 @@
 
 stim_dur = 250; % Stimulus duration in ms
 stim_amp = 1; % stimulus amplitude
-noise_sigma = 0.035; % White noise std for simulation.
+noise_sigma = 0.0; % White noise std for simulation.
 
 p = make_params_genr("stim_seed",1, "num_char",2, "num_type",2,...
         "net_seed",1, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
         "sigma",noise_sigma);
 
-stim_choice = num2cell([1,1]); % Selects a stimulus and turn it 
+stim_choice = num2cell([2,1]); % Selects a stimulus and turn it 
 % into a cell for use in make_Iapp_genr().
 
 Iapp = make_Iapp_genr(p,stim_choice);
 
 [r,D,s] = run_network_genr(p, Iapp, 'silent', 'no');
 
-[r_e_avg] = get_avg_r(p, r, p.simLength-1000, p.simLength); % Gets average firing rate of each unit.
+% [r_e_avg] = get_avg_r(p, r, p.simLength-1000, p.simLength); % Gets average firing rate of each unit.
 
 
 
@@ -42,17 +42,6 @@ xlabel('time (ms)');
 ylabel('Firing rate (Hz)');
 hold off;
 
-
-% RESULTS:
-% I found that neither varying sitmulus amplitude, nor varying stimulus
-% duration was able to knock units out of their attractor states. Just
-% from observing the firing rates vs time, it seems like whichever units
-% get put into the excited firing state at the onset of the stimulus, will
-% remain there during and after the stimulus, with no additions from the
-% "off" group. 
-% However, I did find that by increasing noise to between 0.03 and 0.04, I
-% can observe switching of units between firing states (it seems like most
-% of the switching happens as off units turning on).
 
 
 %% Simple Correlation 
@@ -125,23 +114,31 @@ xlabel("Time (ms)")
 % Parameter values to be used. Might be amplitude, duration, etc.
 % Note: passing stim_amp = 0 to the simulation gives NaN for the
 % correlation, so start the param sweep just above 0. 
-param_array = 0.0:0.1:5; % remember matlab uses start:step:stop
-param_name = "Stimulus Amplitude";
+param_array = 1:100:2000; % remember matlab uses start:step:stop
+param_name = "Stimulus Duration";
 
 cc_avgs = zeros(length(param_array),1); % To hold avg correlation coefficient data.
-cc_stds = zeros(length(param_array),1); % 
+cc_stds = zeros(length(param_array),1); % Holds standard deviations of data.
+cc_SEMs = zeros(length(param_array),1); % Holds standard error of means for data.
 
-num_sims = 10; % Number of simulations the correlation coefficient will be 
+num_sims = 5; % Number of simulations the correlation coefficient will be 
 % averaged over.
 
 % Its important to make these lists and then use the same list for each
-% parameter loop.
-stim_seed_list = rand(num_sims,1);
-net_seed_list = rand(num_sims,1);
+% parameter loop. WARNING: Seeds provided to RandStream to create random
+% number generators are automatically rounded to integers, so it is
+% essential not to rely on floats as seeds.
+stim_seed_list = rand(num_sims,1).*1000;
+net_seed_list = rand(num_sims,1).*1000;
 
 stim_dur = 250; % Stimulus duration in ms
 stim_amp = 1; % stimulus amplitude
-noise_sigma = 0.034; % White noise std for simulation.
+noise_sigma = 0.0; % White noise std for simulation.
+% Connection parameters
+W_e0     = 87;   % connection strength for excitatory SELF connections (ben's value = 89)
+W_ee_max = 1.05; % maximum connection strength for EE connections (ben's value = .342)
+W_ei     = 1.45;  % connection strength for EI connections (ben's value = .665)
+W_ie     = -540; % connection strength for IE connections (ben's value = -540)
 
 
 for k = 1:length(param_array)
@@ -153,14 +150,16 @@ for k = 1:length(param_array)
 
         stim_seed = stim_seed_list(i);
         net_seed = net_seed_list(i);
-
+        
+        % Replace variable with "param_val" in order to vary that
+        % parameter.
         p = make_params_genr("stim_seed",stim_seed, "num_char",2, "num_type",2,...
-            "net_seed",net_seed, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",param_val,...
-            "sigma",noise_sigma);
+            "net_seed",net_seed, "Ne",100, "stim_dur",param_val, "mean_stim_amp",stim_amp,...
+            "sigma",noise_sigma, "W_e0",W_e0, "W_ee_max",W_ee_max, "W_ei",W_ei, "W_ie",W_ie);
 
         stim_choice = num2cell([1,1]);
 
-        corr_coef = r_vs_stim_cc(p, p.simLength, stim_choice); % Runs simulation
+        corr_coef = r_vs_stim_cc(p, [(p.simLength - 1000), p.simLength], stim_choice); % Runs simulation
         % and gets cc data at requested time.
         
         cc_temps(i) = corr_coef;
@@ -168,19 +167,21 @@ for k = 1:length(param_array)
 
     cc_avgs(k) = mean(cc_temps);
     cc_stds(k) = std(cc_temps);
+    cc_SEMs(k) = std(cc_temps)/sqrt(length(cc_temps));
     
 end
 
 
 figure();
-errorbar(param_array, cc_avgs, cc_stds, "o");
+errorbar(param_array, cc_avgs, cc_SEMs, "o");
 title(strcat("Effect of ",param_name," on Firing Rate Correlation with Stimulus"));
 xlabel(param_name)
-ylabel("Avg Correlation Coefficient")
+ylabel("Correlation Coefficient")
 
 
 
 %% Correlation between hyperplane vector dot products and stimulus overlap
+
 % I want to measure how much of an effect the overlap in stimulus inputs
 % has on the resultant dot product of the hyperplane vectors. This will
 % only apply to hyperplanes where the data is split by the same

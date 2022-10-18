@@ -56,11 +56,43 @@ p.p0_i = .1; % fraction of docked vesicles released per spike for IE connections
 p.alpha = 1; % fraction of open receptors bound by maximal vesicle release
 
 % Connection parameters
-p.W_e0     = 89;   % connection strength for excitatory SELF connections (ben's value = 89)
+p.W_e0     = 87;   % connection strength for excitatory SELF connections (ben's value = 89)
 p.W_ee_min = 0;    % minimum connection strength for EE connections (ben's value = 0)
-p.W_ee_max = .342; % maximum connection strength for EE connections (ben's value = .342)
-p.W_ei     = .665;  % connection strength for EI connections (ben's value = .665)
+p.W_ee_max = 1.05; % maximum connection strength for EE connections (ben's value = .342)
+p.W_ei     = 1.45;  % connection strength for EI connections (ben's value = .665)
 p.W_ie     = -540; % connection strength for IE connections (ben's value = -540)
+%
+% Notes on which connection parameter values induce changes in network
+% activity state after stimulus:
+%
+% W_ie just generally raises or lowers the amount of inhibiton the network
+% receives. It is important in determining the avg firing rate of "on" units. 
+%
+% W_ei in some way increases the instability of the "on" state, or at least
+% of a select few units that drop the lowest in frequency after stimulus
+% ends.
+%
+% Raising w_ee_max slowly raises avg firing rate of on units. It also
+% minimizes the amplitude of transient oscillations in firing after stimulus end. 
+% High enough values begin to recruit units from the off state into the on
+% state during these oscillations.
+%
+% W_e0 seems to potently control the amplitude of oscillations after
+% sitmulus end and the resulting steady state firing rate.
+%
+% Continuous recruitment of units into on state: 
+% W_e0 = 89, W_ee_max = 0.8, W_ei = 0.9, W_ie = -520
+%
+% To get slow dropping out of units from the firing state:
+% W_e0 = 87, W_ei - W_ee_max = 0.4, W_ie = -540
+%
+% A nice balance of units dropping in and out after stimulus end, but not
+% much long-term change:
+% W_e0 = 87, W_ee_max = 1.05, W_ei = 1.45, W_ie = -540
+% I will refer to these parameters as the base parameters, including
+% stimulus amplitude = 1, noise sigma = 0, and stimulus duration = 250.
+
+
 
 p.stim_case = 10;
 switch p.stim_case
@@ -81,7 +113,7 @@ switch p.stim_case
         
         p.stim_dur             = 500; % Duration of stimulus (ms)
         p.stim_start           = 1000; % Time to begin stimulus (ms)
-        p.simLength            = 6000; % Total simulation length (ms)
+        p.simLength            = 8000; % Total simulation length (ms)
 end
 
 
@@ -107,6 +139,9 @@ p.stim_amp_std = p.stim_amp_variability*p.mean_stim_amp;
 
 
 % Creates a random number stream ONLY for the stimulus related numbers.
+% WARNING, RandStream rounds integers down, so if I want to calculate
+% random seeds I can't pass them as floats between 0 and 1, instead I need
+% to scale them up to be between, for example, 0 and 1000.
 stim_s = RandStream('mt19937ar', 'Seed',p.stim_seed);
 
 net_s = RandStream('mt19937ar', 'Seed',p.net_seed); % Uses network weight matrix seed 
