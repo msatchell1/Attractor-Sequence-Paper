@@ -114,8 +114,8 @@ xlabel("Time (ms)")
 % Parameter values to be used. Might be amplitude, duration, etc.
 % Note: passing stim_amp = 0 to the simulation gives NaN for the
 % correlation, so start the param sweep just above 0. 
-param_array = -480:-2:-650; % remember matlab uses start:step:stop
-param_name = "Wie";
+param_array = 70:1:125; % remember matlab uses start:step:stop
+param_name = "We0";
 
 cc_avgs = zeros(length(param_array),1); % To hold avg correlation coefficient data.
 cc_stds = zeros(length(param_array),1); % Holds standard deviations of data.
@@ -155,7 +155,7 @@ for k = 1:length(param_array)
         % parameter.
         p = make_params_genr("stim_seed",stim_seed, "num_char",2, "num_type",2,...
             "net_seed",net_seed, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
-            "sigma",noise_sigma, "W_e0",W_e0, "W_ee_max",W_ee_max, "W_ei",W_ei, "W_ie",param_val);
+            "sigma",noise_sigma, "W_e0",param_val, "W_ee_max",W_ee_max, "W_ei",W_ei, "W_ie",W_ie);
 
         stim_choice = num2cell([1,1]);
 
