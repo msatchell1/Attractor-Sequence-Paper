@@ -19,12 +19,19 @@
 %% Multiple 2-model comparisons
 tp = make_train_params();
 
+
+
 % List of stim_seeds to loop through.
-stim_seed_list = [20,21,22,23,24,25,30,35,36,38,39,40,45,50,51,52,53,54];
+stim_seed_list = 10:2:12;
 
 % dotp_same_chartype = [];
 dotp_same_char = [];
 dotp_diff_char = [];
+
+% Array to hold correlation coefficients for each model. Each column are
+% the correlation coefficients for each of the data points used in the
+% model.
+mdl_corr_coeffs = zeros((tp.num_type^tp.num_char), (length(stim_seed_list)-1));
 
 % Loops over stimulus seeds
 for s = 1:(length(stim_seed_list)-1)
@@ -53,7 +60,7 @@ for s = 1:(length(stim_seed_list)-1)
             % matter what type is used for classifying the data when there are
             % only 2 types.
             tp.clsf_index_array = [i,1 ; j,1];
-            [i,1 ; j,1];
+%             [i,1 ; j,1]
 
             % Changes stim_seeds for simulations
             tp.stim_seeds = [stim_seed_list(s), stim_seed_list(s+1)];
@@ -134,7 +141,7 @@ plot(zeros(length(dotp_diff_char),1)+3, dotp_diff_char, 'ro')
 set(gca,'xtick',[1 3]);
 xticklabels(["Same char", "Different char"]);
 ylabel("Dot Product")
-title(strcat("Comparing SVM vectors"))% | stim seeds = ",num2str(tp.stim_seeds)));
+title(strcat("Comparing SVM vectors | stim dur = ",num2str(tp.stim_dur)))% | stim seeds = ",num2str(tp.stim_seeds)));
 xlim([0,4]);
 
 

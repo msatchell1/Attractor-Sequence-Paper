@@ -4,14 +4,10 @@ function [LCO] = param_sweep_genr(LCO,tp)
 % creating multiple sets of data points because of the random connections
 % and noise in the network.
 
-% vary_p.param1 = "stim_seed";
-% vary_p.values1 = stim_seed;
-
-% p = make_params_genr(); % to get p.Ne
-
 
 % Array to hold avg rate data for all parameter sweeps.
 all_r_avg = zeros(tp.num_sweeps,length(tp.type_combs),tp.Ne);
+all_stim_units = zeros(tp.num_sweeps,length(tp.type_combs),tp.Ne);
 types = zeros(tp.num_sweeps,length(tp.type_combs),tp.num_char);
 
 % This loop runs the simulations num_sweeps number of times, each time with
@@ -19,9 +15,9 @@ types = zeros(tp.num_sweeps,length(tp.type_combs),tp.num_char);
 for i = 1:tp.num_sweeps
     
     p = make_params_genr("stim_seed",LCO.stim_seed, "num_char",tp.num_char, "num_type",tp.num_type,...
-        "type_combs",tp.type_combs, "net_seed",tp.net_seed, "Ne",tp.Ne);
+        "type_combs",tp.type_combs, "net_seed",tp.net_seed, "Ne",tp.Ne, "stim_dur",tp.stim_dur);
 
-    all_r_avg(i,:,:) = run_main(p);
+    [all_r_avg(i,:,:),all_stim_units(i,:,:)]  = run_main(p);
     types(i,:,:) = tp.type_combs'; % Stores the types used for the simulations just ran.
 
 end
@@ -29,6 +25,8 @@ end
 LCO.types = types; % Assigns types to linear classification parameters so
 % it can be worked on later.
 LCO.r_avg = all_r_avg;
+LCO.stim_units = all_stim_units; % Saves the unit IDs and stimulus amplitudes
+% they received for every simulation.
 
 
 

@@ -1,4 +1,4 @@
-function [all_r_avg] = run_main(p)
+function [all_r_avg, all_stim_units] = run_main(p)
 % Function for running the network from Ben's paper. I plan to use this network 
 % for the generalization project. I have altered make_params_genr to
 % include parameters for stimulus inputs with variable number of
@@ -9,9 +9,11 @@ function [all_r_avg] = run_main(p)
 % Inputs: p
 % p - parameter structure
 %
-% Outputs: all_r_avg
+% Outputs: all_r_avg, all_stim_units
 % all_r_avg - average firing rates over a period defined in p for each
 % possible combination of stimuli. 
+% all_stim_units - stimulus current amplitude given to each unit for each possible 
+% combination of stimuli.
 
 
 % I have changed the stimulus to be:
@@ -65,6 +67,8 @@ function [all_r_avg] = run_main(p)
 
 all_r_avg = zeros(size(p.type_combs,2),p.Ne); % Array to hold final avg firing rates for
 % all possible stimuli. For excitatory units.
+all_stim_units = zeros(size(p.type_combs,2),p.Ne); % Array to hold the amplitude 
+% of sitmulus received by each unit for each run. 
 
 for j = 1:size(p.type_combs,2) % Loops through all possible type input combinations.
 
@@ -72,9 +76,9 @@ for j = 1:size(p.type_combs,2) % Loops through all possible type input combinati
     % into a cell for use in make_Iapp_genr().
     
     Iapp = make_Iapp_genr(p,stim_choice);
+    all_stim_units(j,:) = Iapp(1:end-1, p.stim_start);
 
     [r,D,s] = run_network_genr(p, Iapp, 'silent', 'no');
-
     [r_e_avg] = get_avg_r(p, r, p.simLength-2000, p.simLength); % Gets average firing rate of each unit.
     all_r_avg(j,:) = r_e_avg'; % Stores each vector.
     

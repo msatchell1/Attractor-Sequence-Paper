@@ -74,6 +74,22 @@ for i = 1:length(LCOs) % Loops over all hyperplane models to be calculated.
     [LCOs(i).Mdl, LCOs(i).FitInfo] = fitclinear(LCOs(i).X, LCOs(i).X_labels);
     
     
+    % I need to calculate the correlation coefficient for each firing rate
+    % data (X) and stim_units pair. First get the sitm units data in the
+    % same format as X:
+    LCOs(i).stim_units_reshaped = reshape(LCOs(i).stim_units,...
+        [(size(LCOs(i).r_avg,1)*size(LCOs(i).r_avg,2)), size(LCOs(i).r_avg,3)]);
+    
+    corr_coeffs = zeros(size(X,1),1);
+    % Loop through each simulation and find the correlation coefficient
+    for k = 1:length(corr_coeffs)
+        % Calculates matrix of coefficients
+        corr_mat = corrcoef(LCOs(i).stim_units_reshaped(k,:), X(k,:));
+        corr_coeffs(k) =  corr_mat(1,2); % grabs off-diagonal element.
+    end
+    
+    LCOs(i).corr_coeffs = corr_coeffs;
+    
 end
 
 

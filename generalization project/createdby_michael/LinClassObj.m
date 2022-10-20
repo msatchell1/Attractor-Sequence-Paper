@@ -10,6 +10,8 @@ classdef LinClassObj
         % Unformatted data from simulations and parameter scans
         types
         r_avg
+        stim_units
+        stim_units_reshaped % reshaped to be like X
 
         X % Formatted avg firing rates so that each row is a data point X.
 
@@ -33,6 +35,11 @@ classdef LinClassObj
 
         Mdl % SVM model object.
         FitInfo % Fit information structure.
+        
+        corr_coeffs % The correlation coefficients between the stimulus input
+        % and the final network firing state. These is one coefficient for 
+        % each simulation. These coefficients are held in the same
+        % order as X.
 
     end
 end

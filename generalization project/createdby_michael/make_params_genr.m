@@ -111,7 +111,7 @@ switch p.stim_case
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
         
-        p.stim_dur             = 500; % Duration of stimulus (ms)
+        p.stim_dur             = 250; % Duration of stimulus (ms)
         p.stim_start           = 1000; % Time to begin stimulus (ms)
         p.simLength            = 8000; % Total simulation length (ms)
 end
