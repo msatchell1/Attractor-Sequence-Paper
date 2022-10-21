@@ -22,7 +22,7 @@ tp = make_train_params();
 
 
 % List of stim_seeds to loop through.
-stim_seed_list = 10:1:25;
+stim_seed_list = 10:1:15;
 
 % dotp_same_chartype = [];
 dotp_same_char = [];
@@ -163,19 +163,11 @@ ylabel("Correlation Coefficient")
 xlabel("Dot Product Same Char")
 hold off;
 
-
 % Plots avg correlation coefficient vs dot product
 figure();
 hold on;
-avg_corr_coeffs = mean(mdl_corr_coeffs_same,1);
-std_cc = std(mdl_corr_coeffs_same,0,1);
-SEM_cc = std_cc./sqrt(size(mdl_corr_coeffs_same,1));
 
-errorbar(dotp_same_char, avg_corr_coeffs, SEM_cc, "o");
-ylabel("Avg Correlation Coefficient")
-xlabel("Dot Product Same Char")
-title("Effect of Avg Stimulus-Final State Correlation on Hyperplane Dot Product")
-hold off;
+hold
 
 % figure();
 % hold on;

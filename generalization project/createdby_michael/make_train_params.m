@@ -25,7 +25,7 @@ tp.num_type = 2;
 
 tp.Ne = 100; % Number of excitatory units
 
-tp.stim_dur = 500; % stimulus duration in ms.
+tp.stim_dur = 1000; % stimulus duration in ms.
 
 tp.stim_seeds = [57,58]; % Must have length = num_mdls
 tp.net_seed = 6; % Seed for network connectivity.

@@ -56,10 +56,10 @@ p.p0_i = .1; % fraction of docked vesicles released per spike for IE connections
 p.alpha = 1; % fraction of open receptors bound by maximal vesicle release
 
 % Connection parameters
-p.W_e0     = 87;   % connection strength for excitatory SELF connections (ben's value = 89)
+p.W_e0     = 89;   % connection strength for excitatory SELF connections (ben's value = 89)
 p.W_ee_min = 0;    % minimum connection strength for EE connections (ben's value = 0)
-p.W_ee_max = 1.05; % maximum connection strength for EE connections (ben's value = .342)
-p.W_ei     = 1.45;  % connection strength for EI connections (ben's value = .665)
+p.W_ee_max = .342; % maximum connection strength for EE connections (ben's value = .342)
+p.W_ei     = .665;  % connection strength for EI connections (ben's value = .665)
 p.W_ie     = -540; % connection strength for IE connections (ben's value = -540)
 %
 % Notes on which connection parameter values induce changes in network
