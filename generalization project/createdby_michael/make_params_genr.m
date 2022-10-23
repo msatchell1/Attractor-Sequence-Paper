@@ -45,7 +45,7 @@ p.Delta_e = 1; % determines slope of excitatory f-I curve
 p.Delta_i = 3; % determines slope of inhibitory f-I curve
 
 % Noise parameters
-p.sigma = [0.012]; % (2 noise levels) sigma is the std of white noise
+p.sigma = [0.0]; % (2 noise levels) sigma is the std of white noise
 % Bens value was 0.002. Around 0.03 is the threshold for noise to start
 % changing units attractor states (i.e. switching them from firing to
 % non-firing and vice versa).
@@ -98,7 +98,7 @@ p.stim_case = 10;
 switch p.stim_case
         
     case 10 % Generalization project case
-        p.mean_stim_amp        = 0.8;
+        p.mean_stim_amp        = 1;
         p.stim_amp_variability = 0;
 
         p.num_char             = 0; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
@@ -107,7 +107,7 @@ switch p.stim_case
 
         p.num_type             = 0; % Number of specific character subtypes for each char. Ex: If color has green 
         % and blue, num_type = 2.
-        p.stim_frac_type       = 0.5; % Fraction of units within a characteristic to assign each type.
+        p.stim_frac_type       = 0.3; % Fraction of units within a characteristic to assign each type.
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
         
