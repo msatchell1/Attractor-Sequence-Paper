@@ -32,9 +32,9 @@ dotp_diff_char = [];
 % the correlation coefficients for each of the data points used in the
 % model.
 % For same characteristics:
-mdl_corr_coeffs_same = zeros(tp.num_mdls*(tp.num_type^tp.num_char), 0);
+mdl_corr_coeffs_same = zeros(tp.num_sweeps*tp.num_mdls*(tp.num_type^tp.num_char), 0);
 % For different characteristics:
-mdl_corr_coeffs_diff = zeros(tp.num_mdls*(tp.num_type^tp.num_char), 0);
+mdl_corr_coeffs_diff = zeros(tp.num_sweeps*tp.num_mdls*(tp.num_type^tp.num_char), 0);
 
 % Loops over stimulus seeds
 for s = 1:(length(stim_seed_list)-1)
@@ -140,7 +140,8 @@ end
 % Plots the dot products with bar graph mean
 figure();
 hold on;
-bar([1 3],[mean(dotp_same_char) mean(dotp_diff_char)],'w');
+% bar([1 3],[mean(dotp_same_char) mean(dotp_diff_char)],'w');
+bar([1 3],[median(dotp_same_char) median(dotp_diff_char)],'w');
 plot(zeros(length(dotp_same_char),1)+1, dotp_same_char, 'go')
 plot(zeros(length(dotp_diff_char),1)+3, dotp_diff_char, 'ro')
 set(gca,'xtick',[1 3]);
@@ -148,20 +149,25 @@ xticklabels(["Same char", "Different char"]);
 ylabel("Dot Product")
 title(strcat("Comparing SVM vectors | stim dur = ",num2str(tp.stim_dur)))% | stim seeds = ",num2str(tp.stim_seeds)));
 xlim([0,4]);
+% Use the Wilcoxon rank sum test to determine if two samples x and y have
+% equal medians
+dotp_median_p = ranksum(dotp_same_char, dotp_diff_char);
+txtline = ['WRS p = ', num2str(dotp_median_p)];
+text(2,max(dotp_same_char),txtline);
 hold off;
 
-% Plots all correlation coefficients vs dot product
-figure();
-hold on;
-% Fills xvals with the same char dotps for plotting
-xvals = zeros(size(mdl_corr_coeffs_same,1),1) + dotp_same_char;
-for i = 1:length(dotp_same_char)
-    scatter(xvals(:,i), mdl_corr_coeffs_same(:,i));
-end
-title("Effect of Stimulus-Final State Correlation on Hyperplane Dot Product")
-ylabel("Correlation Coefficient")
-xlabel("Dot Product Same Char")
-hold off;
+% % Plots all correlation coefficients vs dot product
+% figure();
+% hold on;
+% % Fills xvals with the same char dotps for plotting
+% xvals = zeros(size(mdl_corr_coeffs_same,1),1) + dotp_same_char;
+% for i = 1:length(dotp_same_char)
+%     scatter(xvals(:,i), mdl_corr_coeffs_same(:,i));
+% end
+% title("Effect of Stimulus-Final State Correlation on Hyperplane Dot Product")
+% ylabel("Correlation Coefficient")
+% xlabel("Dot Product Same Char")
+% hold off;
 
 
 % Plots avg correlation coefficient vs dot product
@@ -175,6 +181,12 @@ errorbar(dotp_same_char, avg_corr_coeffs, SEM_cc, "o");
 ylabel("Avg Correlation Coefficient")
 xlabel("Dot Product Same Char")
 title("Effect of Avg Stimulus-Final State Correlation on Hyperplane Dot Product")
+% I also want to find the correlation (if any) between these stimulus
+% correlation values and the dot product.
+[dotp_cc, dotp_cc_p] = corrcoef(dotp_same_char, avg_corr_coeffs);
+txtline = ['r = ', num2str(round(dotp_cc(1,2),3)), ', p = ', num2str(round(dotp_cc_p(1,2),4))];
+text(max(dotp_same_char)/2, max(avg_corr_coeffs), txtline);
+
 hold off;
 
 % figure();

@@ -16,9 +16,12 @@ stim_dur = 250; % Stimulus duration in ms
 stim_amp = 1; % stimulus amplitude
 noise_sigma = 0.0; % White noise std for simulation.
 
+% Input stimulus fraction of available units assigned to each type.
+stim_frac_type = 0.5;
+
 p = make_params_genr("stim_seed",1, "num_char",2, "num_type",2,...
         "net_seed",1, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
-        "sigma",noise_sigma);
+        "sigma",noise_sigma, "stim_frac_type",stim_frac_type);
 
 stim_choice = num2cell([2,1]); % Selects a stimulus and turn it 
 % into a cell for use in make_Iapp_genr().
@@ -114,8 +117,8 @@ xlabel("Time (ms)")
 % Parameter values to be used. Might be amplitude, duration, etc.
 % Note: passing stim_amp = 0 to the simulation gives NaN for the
 % correlation, so start the param sweep just above 0. 
-param_array = 0:1:300; % remember matlab uses start:step:stop
-param_name = "Stimulus Duration";
+param_array = 0:0.0005:0.04; % remember matlab uses start:step:stop
+param_name = "Noise Std";
 
 cc_avgs = zeros(length(param_array),1); % To hold avg correlation coefficient data.
 cc_stds = zeros(length(param_array),1); % Holds standard deviations of data.
@@ -131,14 +134,20 @@ num_sims = 10; % Number of simulations the correlation coefficient will be
 stim_seed_list = rand(num_sims,1).*1000;
 net_seed_list = rand(num_sims,1).*1000;
 
-stim_dur = 250; % Stimulus duration in ms
-stim_amp = 1; % stimulus amplitude
+stim_dur = 1000; % Stimulus duration in ms
+stim_amp = 0.8; % stimulus amplitude
 noise_sigma = 0.0; % White noise std for simulation.
+
+% Input stimulus fraction of available units assigned to each type.
+stim_frac_type = 0.5;
+
 % Connection parameters
 W_e0     = 87;   % connection strength for excitatory SELF connections (ben's value = 89)
 W_ee_max = 1.05; % maximum connection strength for EE connections (ben's value = .342)
 W_ei     = 1.45;  % connection strength for EI connections (ben's value = .665)
 W_ie     = -540; % connection strength for IE connections (ben's value = -540)
+
+
 
 
 for k = 1:length(param_array)
@@ -154,8 +163,9 @@ for k = 1:length(param_array)
         % Replace variable with "param_val" in order to vary that
         % parameter.
         p = make_params_genr("stim_seed",stim_seed, "num_char",2, "num_type",2,...
-            "net_seed",net_seed, "Ne",100, "stim_dur",param_val, "mean_stim_amp",stim_amp,...
-            "sigma",noise_sigma, "W_e0",W_e0, "W_ee_max",W_ee_max, "W_ei",W_ei, "W_ie",W_ie);
+            "net_seed",net_seed, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
+            "sigma",param_val, "W_e0",W_e0, "W_ee_max",W_ee_max, "W_ei",W_ei, "W_ie",W_ie,...
+            "stim_frac_type",stim_frac_type);
 
         stim_choice = num2cell([1,1]);
 
