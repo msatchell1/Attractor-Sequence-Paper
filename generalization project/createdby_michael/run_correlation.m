@@ -16,12 +16,13 @@ stim_dur = 250; % Stimulus duration in ms
 stim_amp = 1; % stimulus amplitude
 noise_sigma = 0.0; % White noise std for simulation.
 
-% Input stimulus fraction of available units assigned to each type.
-stim_frac_type = 0.5;
+% Input stimulus fraction of available units assigned to each type and char.
+stim_frac_type = 1;
+stim_frac_char = 0.15;
 
 p = make_params_genr("stim_seed",1, "num_char",2, "num_type",2,...
         "net_seed",1, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
-        "sigma",noise_sigma, "stim_frac_type",stim_frac_type);
+        "sigma",noise_sigma, "stim_frac_type",stim_frac_type, "stim_frac_char",stim_frac_char);
 
 stim_choice = num2cell([2,1]); % Selects a stimulus and turn it 
 % into a cell for use in make_Iapp_genr().
@@ -134,13 +135,11 @@ num_sims = 10; % Number of simulations the correlation coefficient will be
 stim_seed_list = rand(num_sims,1).*1000;
 net_seed_list = rand(num_sims,1).*1000;
 
-stim_dur = 1000; % Stimulus duration in ms
-stim_amp = 0.8; % stimulus amplitude
+stim_dur = 250; % Stimulus duration in ms
+stim_amp = 1; % stimulus amplitude
 noise_sigma = 0.0; % White noise std for simulation.
-
 % Input stimulus fraction of available units assigned to each type.
-stim_frac_type = 0.5;
-
+stim_frac_type = 0.3;
 % Connection parameters
 W_e0     = 87;   % connection strength for excitatory SELF connections (ben's value = 89)
 W_ee_max = 1.05; % maximum connection strength for EE connections (ben's value = .342)

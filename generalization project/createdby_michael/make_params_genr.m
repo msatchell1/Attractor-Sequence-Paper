@@ -102,12 +102,12 @@ switch p.stim_case
         p.stim_amp_variability = 0;
 
         p.num_char             = 0; % Number of characteristics in an input. Ex: if shape and color, num_char = 2.
-        p.stim_frac_char       = 0.5; % Fraction of total units to be assigned to a characteristic.
+        p.stim_frac_char       = 0.16; % Fraction of total units to be assigned to a characteristic.
         % Note num_char*stim_frac_char cannot be greater than 1. 
 
         p.num_type             = 0; % Number of specific character subtypes for each char. Ex: If color has green 
         % and blue, num_type = 2.
-        p.stim_frac_type       = 0.3; % Fraction of units within a characteristic to assign each type.
+        p.stim_frac_type       = 0.99; % Fraction of units within a characteristic to assign each type.
         % Note stim_frac_type can range from 0 to 1, as overlap is allowed
         % between type inputs.
         
