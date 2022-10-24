@@ -52,7 +52,7 @@ figure();
 % Firing rate plot:
 ax_r = axes;
 im_r = imagesc(r);
-im_r.AlphaData = 1;
+im_r.AlphaData = 0.7;
 axis square
 hold all
 % Current plot:
@@ -73,9 +73,6 @@ colormap(ax_i,'cool')
 set([ax_r,ax_i],'Position',[.17 .11 .685 .815]); 
 cb_r = colorbar(ax_r,'Position',[.05 .11 .0675 .815]); 
 cb_i = colorbar(ax_i,'Position',[.88 .11 .0675 .815]); 
-cb_r.Label.String = "Firing Rate (Hz)";
-cb_i.Label.String = "Stimulus Amplitude";
-title("Network Activity and Stimulus Input")
 
 % cb_r1 = colorbar(ax_r,'Location','WestOutside'); 
 % cb_r2 = colorbar(ax_i,'Location','EastOutside'); 
