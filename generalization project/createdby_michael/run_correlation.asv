@@ -13,15 +13,15 @@
 % and duration.
 
 stim_dur = 250; % Stimulus duration in ms
-stim_amp = 1.1; % stimulus amplitude
+stim_amp = 1; % stimulus amplitude
 noise_sigma = 0.0; % White noise std for simulation.
 
 % Input stimulus fraction of available units assigned to each type and char.
 stim_frac_type = 0.3;
 stim_frac_char = 0.5;
 
-p = make_params_genr("stim_seed",4, "num_char",2, "num_type",2,...
-        "net_seed",3, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
+p = make_params_genr("stim_seed",1, "num_char",2, "num_type",2,...
+        "net_seed",1, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",stim_amp,...
         "sigma",noise_sigma, "stim_frac_type",stim_frac_type, "stim_frac_char",stim_frac_char);
 
 stim_choice = num2cell([2,1]); % Selects a stimulus and turn it 
@@ -249,7 +249,7 @@ ylabel("Correlation Coefficient")
 
 %% Run general parameter scans
 
-param_array = 0:2:500; % remember matlab uses start:step:stop
+param_array = 0:10:1000; % remember matlab uses start:step:stop
 param_name = "Stimulus Duration";
 
 % cc_avgs = zeros(length(param_array),1); % To hold avg correlation coefficient data.
@@ -312,7 +312,7 @@ for k = 1:length(param_array)
         % Replace variable with "param_val" in order to vary that
         % parameter.
         p = make_params_genr("stim_seed",stim_seed, "num_char",2, "num_type",2,...
-            "net_seed",net_seed, "Ne",100, "stim_dur",param_val, "mean_stim_amp",stim_amp,...
+            "net_seed",net_seed, "Ne",100, "stim_dur",stim_dur, "mean_stim_amp",param_val,...
             "sigma",noise_sigma, "W_e0",W_e0, "W_ee_max",W_ee_max, "W_ei",W_ei, "W_ie",W_ie,...
             "stim_frac_type",stim_frac_type);
 
