@@ -17,7 +17,7 @@ stim_amp = 1; % stimulus amplitude
 noise_sigma = 0.0; % White noise std for simulation.
 
 % Input stimulus fraction of available units assigned to each type and char.
-stim_frac_type = 0.6;
+stim_frac_type = 0.3;
 stim_frac_char = 0.5;
 
 p = make_params_genr("stim_seed",5, "num_char",2, "num_type",2,...
